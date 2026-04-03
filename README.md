@@ -53,6 +53,35 @@ openclaw gateway restart
 
 `install.sh` symlinks all 52 skills, creates state directories for stateful skills, and registers cron jobs — everything in one step. That's it. Your agent now has superpowers.
 
+## Important: install does not force behavior
+
+Installing these skills does not guarantee that OpenClaw will follow `using-superpowers` or any other skill on every turn.
+
+Why:
+
+- `SOUL.md` and `AGENTS.md` are prompt inputs, not hard enforcement.
+- Skills are exposed as available capabilities, and the model decides whether to read and apply them.
+- Changes to installed skills are safest to validate in a fresh OpenClaw session.
+
+For best results:
+
+1. Start a new OpenClaw session after installation.
+2. Verify the skill is eligible:
+
+   ```bash
+   openclaw skills list --eligible
+   openclaw skills info using-superpowers
+   ```
+
+3. Put mandatory operating rules in `AGENTS.md`, not only `SOUL.md`.
+4. Keep `AGENTS.md` and `SOUL.md` concise so they are less likely to be truncated.
+
+If you need deterministic behavior:
+
+- Move critical workflow rules into `AGENTS.md`.
+- Use OpenClaw hooks or plugins to enforce behavior at runtime.
+- Do not rely on `SOUL.md` alone to force deterministic skill execution.
+
 ---
 
 ## Skills included
