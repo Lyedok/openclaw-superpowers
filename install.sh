@@ -40,7 +40,8 @@ register_cron_skill() {
       --cron "$cron_expr" \
       --session isolated \
       --message "Execute skill $skill_name" \
-      --no-deliver
+      --no-deliver \
+      --disabled
   then
     echo "ERROR: failed to register cron for $skill_name ($cron_expr)" >&2
     exit 1
