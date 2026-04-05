@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'echo "ERROR at line $LINENO"' ERR
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENCLAW_DIR="${OPENCLAW_HOME:-$HOME/.openclaw}"
 INSTALL_TARGET="$OPENCLAW_DIR/skills/superpowers"
@@ -13,9 +14,8 @@ if [ ! -d "$OPENCLAW_DIR" ]; then
 fi
 
 # --- Symlink ---
-rm -rf "$INSTALL_TARGET"
-mkdir -p "$INSTALL_TARGET"
-ln -s "$REPO_DIR/skills" "$INSTALL_TARGET"
+mkdir -p "$(dirname "$INSTALL_TARGET")"
+ln -sfn "$REPO_DIR/skills" "$INSTALL_TARGET"
 
 # --- Helper: register a stateful skill (create state dir + empty stub) ---
 register_stateful_skill() {
@@ -49,8 +49,31 @@ for skill_file in "$REPO_DIR/skills/openclaw-native"/*/SKILL.md; do
   [ -f "$skill_file" ] || continue
   skill_name="$(basename "$(dirname "$skill_file")")"
 
-  fm_stateful="$(sed -n '2,/^---$/p' "$skill_file" | grep '^stateful:' | sed 's/^stateful: *//' | tr -d '[:space:]')"
-  fm_cron="$(sed -n '2,/^---$/p' "$skill_file" | grep '^cron:' | sed 's/^cron: *//' | tr -d '"'"'")"
+  fm_stateful="$(
+    awk '
+      BEGIN { in_fm=0 }
+      NR==1 && /^---$/ { in_fm=1; next }
+      in_fm && /^---$/ { exit }
+      in_fm && /^stateful:/ {
+        sub(/^stateful:[[:space:]]*/, "", $0)
+        gsub(/[[:space:]]/, "", $0)
+        print
+      }
+    ' "$skill_file"
+  )"
+
+  fm_cron="$(
+    awk '
+      BEGIN { in_fm=0 }
+      NR==1 && /^---$/ { in_fm=1; next }
+      in_fm && /^---$/ { exit }
+      in_fm && /^cron:/ {
+        sub(/^cron:[[:space:]]*/, "", $0)
+        gsub(/"/, "", $0)
+        print
+      }
+    ' "$skill_file"
+  )"
 
   if [ "$fm_stateful" = "true" ]; then
     register_stateful_skill "$skill_name"
