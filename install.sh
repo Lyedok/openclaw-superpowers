@@ -3,7 +3,7 @@ set -euo pipefail
 trap 'echo "ERROR at line $LINENO"' ERR
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENCLAW_DIR="${OPENCLAW_HOME:-$HOME/.openclaw}"
-INSTALL_TARGET="$OPENCLAW_DIR/skills/superpowers"
+INSTALL_TARGET="$OPENCLAW_DIR/superpowers"
 STATE_DIR="$OPENCLAW_DIR/skill-state"
 
 echo "Installing openclaw-superpowers..."
@@ -15,7 +15,7 @@ fi
 
 # --- Symlink ---
 mkdir -p "$(dirname "$INSTALL_TARGET")"
-ln -sfn "$REPO_DIR/skills" "$INSTALL_TARGET"
+ln -sfn "$REPO_DIR/skills/" "$INSTALL_TARGET"
 
 # --- Helper: register a stateful skill (create state dir + empty stub) ---
 register_stateful_skill() {
@@ -95,10 +95,14 @@ for skill_file in "$REPO_DIR/skills/openclaw-native"/*/SKILL.md; do
   fi
 done
 
+
+openclaw config set skills.load.extraDirs $INSTALL_TARGET/skills
+
+openclaw gateway restart
+
 echo ""
 echo "openclaw-superpowers installed."
 echo "  Skills symlinked to: $INSTALL_TARGET"
 echo "  State directories:   $STATEFUL_COUNT created/preserved at $STATE_DIR"
 echo "  Cron jobs registered: $CRON_COUNT"
 echo ""
-echo "Restart OpenClaw to activate."
