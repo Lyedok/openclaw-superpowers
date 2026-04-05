@@ -97,7 +97,7 @@ for skill_file in "$REPO_DIR/skills/openclaw-native"/*/SKILL.md; do
 done
 
 
-openclaw config set skills.load.extraDirs "[\"$INSTALL_TARGET/skills\"]" --strict-json
+openclaw config set skills.load.extraDirs "[\"$INSTALL_TARGET/core\",\"$INSTALL_TARGET/community\",\"$INSTALL_TARGET/openclaw-native\"]" --strict-json
 
 openclaw gateway restart
 
