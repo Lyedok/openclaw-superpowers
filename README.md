@@ -200,7 +200,7 @@ Six skills form a defense-in-depth security layer for autonomous agents:
 ## Architecture
 
 ```
-~/.openclaw/extensions/superpowers/
+~/.openclaw/superpowers/
 ├── skills/
 │   ├── core/                    # 15 methodology skills (any runtime)
 │   │   ├── brainstorming/

@@ -78,7 +78,7 @@ scan_history:
 #     Medium signal   : 4
 #     Low signal      : 2
 #
-#     Written to: ~/.openclaw/extensions/superpowers/PROPOSALS.md
+#     Written to: ~/.openclaw/superpowers/PROPOSALS.md
 #
 # python3 radar.py --mark-actioned skill-auto-update-mechanism --action built
 #   ✓ Marked 'skill-auto-update-mechanism' as built. Won't be re-proposed.
