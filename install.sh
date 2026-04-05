@@ -2,7 +2,7 @@
 set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OPENCLAW_DIR="${OPENCLAW_HOME:-$HOME/.openclaw}"
-INSTALL_TARGET="$OPENCLAW_DIR/extensions/superpowers"
+INSTALL_TARGET="$OPENCLAW_DIR/skills/superpowers"
 STATE_DIR="$OPENCLAW_DIR/skill-state"
 
 echo "Installing openclaw-superpowers..."
@@ -13,8 +13,8 @@ if [ ! -d "$OPENCLAW_DIR" ]; then
 fi
 
 # --- Symlink ---
-mkdir -p "$OPENCLAW_DIR/extensions"
 rm -rf "$INSTALL_TARGET"
+mkdir -p "$INSTALL_TARGET"
 ln -s "$REPO_DIR/skills" "$INSTALL_TARGET"
 
 # --- Helper: register a stateful skill (create state dir + empty stub) ---
