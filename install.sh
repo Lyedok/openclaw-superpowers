@@ -35,18 +35,19 @@ register_cron_skill() {
   local skill_name="$1"
   local cron_expr="$2"
 
-  if openclaw cron add \
+  if ! openclaw cron add \
       --name "$skill_name" \
       --cron "$cron_expr" \
       --session isolated \
       --message "Execute skill $skill_name" \
       --no-deliver
   then
-    echo "  + cron: $skill_name ($cron_expr)"
-    CRON_COUNT=$((CRON_COUNT + 1))
-  else
-    echo "  WARN: 'openclaw cron add' failed for $skill_name"
+    echo "ERROR: failed to register cron for $skill_name ($cron_expr)" >&2
+    exit 1
   fi
+
+  echo "  + cron: $skill_name ($cron_expr)"
+  CRON_COUNT=$((CRON_COUNT + 1))
 }
 
 # --- Scan openclaw-native skills for stateful/cron fields ---
