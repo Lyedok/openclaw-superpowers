@@ -91,7 +91,7 @@ Add to the end of `install.sh`:
 
 ```bash
 echo "Running Skill Doctor post-install check..."
-python3 ~/.openclaw/superpowers/skills/openclaw-native/skill-doctor/doctor.py --scan --only-failures
+python3 ~/.openclaw/superpowers/openclaw-native/skill-doctor/doctor.py --scan --only-failures
 ```
 
 This surfaces any broken skills immediately after install rather than letting them silently disappear.

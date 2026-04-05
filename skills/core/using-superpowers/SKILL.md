@@ -15,7 +15,7 @@ Skills are cheap to load. Failing to use an applicable skill is expensive.
 
 At the start of every new task:
 
-1. Review available skills (check `~/.openclaw/superpowers/skills/`)
+1. Review available skills (check `openclaw skills list --eligible`)
 2. Ask: "Does any skill match what I'm about to do?"
 3. If yes → load and follow the skill exactly
 4. If no → proceed with default behavior
